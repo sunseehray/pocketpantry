@@ -1,5 +1,3 @@
-import java.time.LocalDate
-
 class Inventory {
     private val products = mutableListOf<Product>()
     private val stockList = mutableListOf<Stock>()
@@ -12,15 +10,13 @@ class Inventory {
     }
 
     // Add a stock
-    fun addStock(productId: Int, quantity: Int, expiryDate: LocalDate) {
-        repeat(quantity) {
-            stockList.add(Stock(productId = productId, quantity = 1, expiryDate = expiryDate))
-        }
+    fun addStock(productId: Int, quantity: Int) {
+        stockList.add(Stock(productId = productId, quantity = quantity))
     }
 
     // remove stock
-    fun reduceStock(productId: Int, expiryDate: LocalDate, quantity: Int): Boolean {
-        val stock = stockList.find { it.productId == productId && it.expiryDate == expiryDate }
+    fun reduceStock(productId: Int, quantity: Int): Boolean {
+        val stock = stockList.find { it.productId == productId }
         return if (stock != null && stock.quantity >= quantity) {
             stock.quantity -= quantity
             if (stock.quantity == 0) stockList.remove(stock)
@@ -31,13 +27,11 @@ class Inventory {
     }
 
     // Get inventory list
-    fun getInventory(sortByExpiry: Boolean = false): List<Pair<Product, List<Stock>>> {
+    fun getInventory(): List<Pair<Product, List<Stock>>> {
         val inventory = products.map { product ->
             product to stockList.filter { it.productId == product.id }
         }
-        return if (sortByExpiry) {
-            inventory.map { it.first to it.second.sortedBy { stock -> stock.expiryDate }}
-        } else inventory
+        return inventory
     }
 
     // Filter out-of-stock products
@@ -47,13 +41,5 @@ class Inventory {
         }
     }
 
-    // Bulk addition
-    fun addBulkStock(productId: Int, quantity: Int, expiryDate: LocalDate) {
-        stockList.add(Stock(productId = productId, quantity = quantity, expiryDate = expiryDate))
-    }
 
-    // manage expiry dates by group
-    fun getStocksGroupedByExpiry(): Map<LocalDate, List<Stock>> {
-        return stockList.groupBy { it.expiryDate }
-    }
 }
