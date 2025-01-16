@@ -39,7 +39,7 @@ class Inventory () {
     }
 
     fun countByCategory(category: Category): Int {
-        var numByCategory = stockList.count { it.category == category }
+        val numByCategory = stockList.count { it.category == category }
         return numByCategory
     }
 
