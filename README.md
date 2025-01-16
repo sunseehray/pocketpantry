@@ -7,7 +7,7 @@ With Pocket Pantry, users can add items and indicate their unit weight or volume
 
 Users can also sort their inventory by category or by date of expiry.
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](http://youtube.com)
 
 # Development Environment
 
