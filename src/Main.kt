@@ -14,7 +14,7 @@ fun main() {
 
     do {
         DisplayMenu()
-        var choice = readLine()
+        val choice = readLine()
         println("You selected $choice")
         when (choice) {
             "1" -> println("Add stock")
