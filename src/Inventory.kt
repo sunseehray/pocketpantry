@@ -1,45 +1,46 @@
-class Inventory {
-    private val products = mutableListOf<Product>()
-    private val stockList = mutableListOf<Stock>()
+class Inventory () {
+    private val stockList = mutableListOf<Item>()
 
-    // Add a product
-    fun addProduct(name: String, category: Category): Product {
-        val product = Product(id = products.size + 1, name = name, category = category)
-        products.add(product)
-        return product
+    // add a new item
+    fun addNewItem(item: Item) {
+        stockList.add(item)
     }
 
-    // Add a stock
-    fun addStock(productId: Int, quantity: Int) {
-        stockList.add(Stock(productId = productId, quantity = quantity))
+    // add items from list under one category
+    fun addBulk(list: List<String>, category: Category) {
+        for (item in list) {
+            val itemToAdd = Item(id = this.getSize() + 1, name = item, category = category)
+            stockList.add(itemToAdd)
+        }
     }
 
-    // remove stock
-    fun reduceStock(productId: Int, quantity: Int): Boolean {
-        val stock = stockList.find { it.productId == productId }
-        return if (stock != null && stock.quantity >= quantity) {
-            stock.quantity -= quantity
-            if (stock.quantity == 0) stockList.remove(stock)
-            true
+    // increase stock of existing item
+    fun addStock(id: Int, quantity: Int) {
+        val itemExists = stockList.find { it.id == id }
+        if (itemExists != null) {
+            itemExists.quantity += quantity
         } else {
-            false // not enough stock or stock not found
+            println("Item with id $id not found.")
         }
     }
 
-    // Get inventory list
-    fun getInventory(): List<Pair<Product, List<Stock>>> {
-        val inventory = products.map { product ->
-            product to stockList.filter { it.productId == product.id }
-        }
-        return inventory
+    fun getItemQuantity(id: Int): Int {
+        return stockList.find { it.id == id }?.quantity ?: 0
     }
 
-    // Filter out-of-stock products
-    fun getOutOfStockProducts(): List<Product> {
-        return products.filter { product ->
-            stockList.none { it.productId == product.id }
+    fun getSize(): Int {
+        return stockList.size
+    }
+
+    fun displayInventory() {
+        for (item in stockList) {
+            println(item)
         }
     }
 
+    fun countByCategory(category: Category): Int {
+        var numByCategory = stockList.count { it.category == category }
+        return numByCategory
+    }
 
 }
