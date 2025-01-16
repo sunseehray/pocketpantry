@@ -2,7 +2,7 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     // app menu
-    fun DisplayMenu() {
+    fun displayMenu() {
         println("-- Menu --")
         println("1. Add stock")
         println("2. Remove stock")
@@ -13,14 +13,15 @@ fun main() {
     }
 
     do {
-        DisplayMenu()
-        val choice = readLine()
+        displayMenu()
+        val choice = readlnOrNull()
         println("You selected $choice")
         when (choice) {
             "1" -> println("Add stock")
             "2" -> println("Remove stock")
             "3" -> println("Create a new product")
             "4" -> println("See my inventory")
+            "5" -> println("Exit")
             else -> println("Error")
         }
     } while (choice != "5")
