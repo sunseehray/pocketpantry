@@ -1,0 +1,3 @@
+enum class Category {
+    PROTEIN, DAIRY, VEGETABLES, GRAINS, FRUITS, OTHERS
+}
