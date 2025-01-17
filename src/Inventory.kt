@@ -55,10 +55,4 @@ class Inventory {
             println(item)
         }
     }
-
-    fun countByCategory(category: Category): Int {
-        val numByCategory = stockList.count { it.category == category }
-        return numByCategory
-    }
-
 }
