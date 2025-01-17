@@ -1,4 +1,4 @@
-class Inventory () {
+class Inventory {
     private val stockList = mutableListOf<Item>()
 
     // add a new item
@@ -6,22 +6,33 @@ class Inventory () {
         stockList.add(item)
     }
 
-    // add items from list under one category
-    fun addBulk(list: List<String>, category: Category) {
-        for (item in list) {
-            val itemToAdd = Item(id = this.getSize() + 1, name = item, category = category)
-            stockList.add(itemToAdd)
-        }
-    }
-
-    // increase stock of existing item
-    fun addStock(id: Int, quantity: Int) {
+    // change stock of existing item
+    fun changeStock(id: Int, quantity: Int): Boolean {
         val itemExists = stockList.find { it.id == id }
         if (itemExists != null) {
             itemExists.quantity += quantity
+            return true
         } else {
             println("Item with id $id not found.")
+            return false
         }
+    }
+
+    // change price of item by id
+    fun changePrice(id: Int, price: Double): Boolean {
+        val itemExists = stockList.find { it.id == id }
+        if (itemExists != null) {
+            itemExists.price = price
+            return true
+        } else {
+            println("Item with id $id not found.")
+            return false
+        }
+    }
+
+    // get price by id
+    fun getItemPrice(id: Int): Double {
+        return stockList.find { it.id == id }!!.price
     }
 
     fun getItemQuantity(id: Int): Int {
@@ -34,6 +45,13 @@ class Inventory () {
 
     fun displayInventory() {
         for (item in stockList) {
+            println(item)
+        }
+    }
+
+    fun displayInventoryByCategory(category: Category) {
+        val filteredList = stockList.filter { it.category == category }
+        for (item in filteredList) {
             println(item)
         }
     }
