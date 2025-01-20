@@ -16,7 +16,7 @@ fun main() {
      */
     println("Test 1: Add one item to inventory")
     // get size before adding item
-    val initSize = inventory.getSize()
+    val initSize = inventory.getSize() // 0
 
     // add one item
     var itemId = inventory.getSize() + 1
@@ -24,7 +24,7 @@ fun main() {
     inventory.addNewItem(apple)
 
     // check new inventory size
-    val newSize = inventory.getSize()
+    val newSize = inventory.getSize() // 1
 
     var testResult = newSize - initSize == 1
     displayTestResult(testResult)

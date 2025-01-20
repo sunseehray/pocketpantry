@@ -3,11 +3,11 @@
 Pocket Pantry is an app that helps users keep track of the inventory in their pantry.
 As a software developer who wants to create solutions for homemakers, I am trying to learn Kotlin to develop my project into an android app.
 
-With Pocket Pantry, users can add items and indicate their unit weight or volume, quantity, price, and expiry date. Users can also manually set the target amount of each item in building their food storage. Another information they can include is the category of the item such as grains or vegetables, and the location of the item (e.g. freezer, basement, kitchen pantry, shed).
+With Pocket Pantry, users can add items and indicate their unit weight or volume, quantity, price, and notes. Users can include is the category of the item such as grains or vegetables.
 
-Users can also sort their inventory by category or by date of expiry.
+Users can generate a list of their inventory and filter it by category.
 
-[Software Demo Video](http://youtube.com)
+[Software Demo Video](https://youtu.be/s6vf8Lv6IFI)
 
 # Development Environment
 
@@ -26,3 +26,4 @@ Users can also sort their inventory by category or by date of expiry.
 - Develop into Mobile App
 - Develop its database using mongoDb
 - Develop a web app version using React
+- Add more features such as image urls and suppliers information
