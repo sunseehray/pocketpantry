@@ -9,11 +9,11 @@ class Inventory {
     // change stock of existing item
     fun changeStock(id: Int, quantity: Int): Boolean {
         val itemExists = stockList.find { it.id == id }
-        if (itemExists != null) {
+        if (itemExists != null && getItemQuantity(id) + quantity >= 0) {
             itemExists.quantity += quantity
             return true
         } else {
-            println("Item with id $id not found.")
+            println("Error in stock change. Either item not found or stock change resulted in a negative number.")
             return false
         }
     }

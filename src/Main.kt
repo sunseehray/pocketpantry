@@ -54,7 +54,7 @@ fun main() {
         Decrease stock
      */
     // decrease apples by 3
-    println("Test 3: Decrease stock of existing item.")
+    println("Test 3a: Decrease stock of existing item.")
     itemId = 1
     changeStockResult = inventory.changeStock(itemId, -3)
     if (changeStockResult) {
@@ -62,6 +62,16 @@ fun main() {
         displayTestResult(testResult)
     } else {
         println("Error decreasing stock for product $itemId.")
+        displayTestResult(false)
+    }
+    println("Test 3b: Decrease stock to negative.")
+    itemId = 1
+    changeStockResult = inventory.changeStock(itemId, -10)
+    if (!changeStockResult) {
+        testResult = inventory.getItemQuantity(1) == 4 // stayed the same at 4
+        displayTestResult(testResult)
+    } else {
+        println("Error not allowing stock below zero.")
         displayTestResult(false)
     }
 
@@ -95,5 +105,7 @@ fun main() {
 
     println("\nCOMPLETE LIST")
     inventory.displayInventory()
+
+
 
 }
