@@ -1,88 +1,99 @@
 fun main() {
-    val inventory = Inventory()
-
-    println("Welcome to Pocket Pantry!")
-    while (true) {
-        println("\nChoose an action:")
-        println("1. Add Product")
-        println("2. Add Stock")
-        println("3. Reduce Stock")
-        println("4. View Inventory")
-        println("5. View Out-of-Stock Products")
-        println("6. Exit")
-
-        when (readLine()?.toIntOrNull()) {
-            1 -> {
-                println("Enter product name:")
-                val name = readLine() ?: ""
-                println("Choose category (1: Protein, 2: Dairy, 3: Vegetables, 4: Grains, 5: Fruits, 6: Others):")
-                val categoryChoice = readLine()?.toIntOrNull()
-                val category = when (categoryChoice) {
-                    1 -> Category.PROTEIN
-                    2 -> Category.DAIRY
-                    3 -> Category.VEGETABLES
-                    4 -> Category.GRAINS
-                    5 -> Category.FRUITS
-                    else -> Category.OTHERS
-                }
-                val product = inventory.addProduct(name, category)
-                println("Product added: $product")
-            }
-
-            2 -> {
-                println("Enter product ID to add stock:")
-                val productId = readLine()?.toIntOrNull() ?: -1
-                println("Enter quantity:")
-                val quantity = readLine()?.toIntOrNull() ?: 0
-
-                inventory.addStock(productId, quantity)
-                println("Added $quantity units of stock for product ID $productId.")
-            }
-
-            3 -> {
-                println("Enter product ID to reduce stock:")
-                val productId = readLine()?.toIntOrNull() ?: -1
-                println("Enter quantity:")
-                val quantity = readLine()?.toIntOrNull() ?: 0
-
-                val success = inventory.reduceStock(productId, quantity)
-                if (success) {
-                    println("Reduced $quantity units of stock for product ID $productId.")
-                } else {
-                    println("Failed to reduce stock. Not enough stock.")
-                }
-            }
-
-            4 -> {
-                val inventoryList = inventory.getInventory()
-
-                println("\nCurrent Inventory:")
-                inventoryList.forEach { (product, stocks) ->
-                    println("Product: ${product.name} (${product.category})")
-                    stocks.forEach {
-                        println("  Quantity: ${it.quantity}")
-                    }
-                }
-            }
-
-            5 -> {
-                val outOfStockProducts = inventory.getOutOfStockProducts()
-                if (outOfStockProducts.isEmpty()) {
-                    println("No out-of-stock products!")
-                } else {
-                    println("\nOut-of-Stock Products:")
-                    outOfStockProducts.forEach { println("${it.name} (${it.category})") }
-                }
-            }
-
-            6 -> {
-                println("Goodbye!")
-                break
-            }
-
-            else -> {
-                println("Invalid choice. Please try again.")
-            }
+    // test results
+    fun displayTestResult(testResult: Boolean) {
+        if (testResult) {
+            println("-- PASSED :) --")
+        } else {
+            println("-- FAILED :( --")
         }
     }
+
+    // initialize inventory
+    val inventory = Inventory()
+
+    /* TEST 1:
+        Add one item to the inventory
+     */
+    println("Test 1: Add one item to inventory")
+    // get size before adding item
+    val initSize = inventory.getSize()
+
+    // add one item
+    var itemId = inventory.getSize() + 1
+    val apple = Item(itemId, "Apple", 2.50, Category.FRUITS, 4)
+    inventory.addNewItem(apple)
+
+    // check new inventory size
+    val newSize = inventory.getSize()
+
+    var testResult = newSize - initSize == 1
+    displayTestResult(testResult)
+
+    /* TEST 2:
+        Increase stock of existing item
+     */
+    println("Test 2a: Increase stock of existing item.")
+    // add 3 apples
+    itemId = 1
+    if (inventory.changeStock(itemId, 3)) {
+        val newAppleStock = inventory.getItemQuantity(itemId)
+        testResult = newAppleStock == 7
+        displayTestResult(testResult)
+    } else {
+        println("Failed to increase stock for product $itemId.")
+        displayTestResult(false)
+    }
+
+    // increase stock of non-existing item
+    println("Test 2b: Increase stock of non-existing item.")
+    itemId = 5
+    var changeStockResult = inventory.changeStock(itemId, 2) // should return FALSE to pass
+    if (!changeStockResult) displayTestResult(true)
+
+    /* Test 3:
+        Decrease stock
+     */
+    // decrease apples by 3
+    println("Test 3: Decrease stock of existing item.")
+    itemId = 1
+    changeStockResult = inventory.changeStock(itemId, -3)
+    if (changeStockResult) {
+        testResult = inventory.getItemQuantity(1) == 4
+        displayTestResult(testResult)
+    } else {
+        println("Error decreasing stock for product $itemId.")
+        displayTestResult(false)
+    }
+
+    /* Test 4:
+    Change item price
+     */
+    println("Test 4: Change price of existing item.")
+    itemId = 1
+    val changePriceResult = inventory.changePrice(itemId, 1.23)
+    if (changePriceResult) {
+        testResult = inventory.getItemPrice(itemId) == 1.23
+        displayTestResult(testResult)
+    } else {
+        println("Error changing price for product $itemId.")
+        displayTestResult(false)
+    }
+
+    /* DISPLAYING INVENTORY */
+    println("\n--DISPLAYING INVENTORY--")
+
+    // Add more items
+    val milk = Item(inventory.getSize() + 1, "Milk", 2.50, Category.DAIRY, 4)
+    inventory.addNewItem(milk)
+    val cheese = Item(inventory.getSize() + 1, "Cheese", 3.50, Category.DAIRY, 1)
+    inventory.addNewItem(cheese)
+    val tuna = Item(inventory.getSize() + 1, "Tuna", 6.00, Category.PROTEIN, 6)
+    inventory.addNewItem(tuna)
+
+    println("DAIRY LIST")
+    inventory.displayInventoryByCategory(Category.DAIRY)
+
+    println("\nCOMPLETE LIST")
+    inventory.displayInventory()
+
 }

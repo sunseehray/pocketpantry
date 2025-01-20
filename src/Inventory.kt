@@ -1,45 +1,58 @@
 class Inventory {
-    private val products = mutableListOf<Product>()
-    private val stockList = mutableListOf<Stock>()
+    private val stockList = mutableListOf<Item>()
 
-    // Add a product
-    fun addProduct(name: String, category: Category): Product {
-        val product = Product(id = products.size + 1, name = name, category = category)
-        products.add(product)
-        return product
+    // add a new item
+    fun addNewItem(item: Item) {
+        stockList.add(item)
     }
 
-    // Add a stock
-    fun addStock(productId: Int, quantity: Int) {
-        stockList.add(Stock(productId = productId, quantity = quantity))
-    }
-
-    // remove stock
-    fun reduceStock(productId: Int, quantity: Int): Boolean {
-        val stock = stockList.find { it.productId == productId }
-        return if (stock != null && stock.quantity >= quantity) {
-            stock.quantity -= quantity
-            if (stock.quantity == 0) stockList.remove(stock)
-            true
+    // change stock of existing item
+    fun changeStock(id: Int, quantity: Int): Boolean {
+        val itemExists = stockList.find { it.id == id }
+        if (itemExists != null) {
+            itemExists.quantity += quantity
+            return true
         } else {
-            false // not enough stock or stock not found
+            println("Item with id $id not found.")
+            return false
         }
     }
 
-    // Get inventory list
-    fun getInventory(): List<Pair<Product, List<Stock>>> {
-        val inventory = products.map { product ->
-            product to stockList.filter { it.productId == product.id }
-        }
-        return inventory
-    }
-
-    // Filter out-of-stock products
-    fun getOutOfStockProducts(): List<Product> {
-        return products.filter { product ->
-            stockList.none { it.productId == product.id }
+    // change price of item by id
+    fun changePrice(id: Int, price: Double): Boolean {
+        val itemExists = stockList.find { it.id == id }
+        if (itemExists != null) {
+            itemExists.price = price
+            return true
+        } else {
+            println("Item with id $id not found.")
+            return false
         }
     }
 
+    // get price by id
+    fun getItemPrice(id: Int): Double {
+        return stockList.find { it.id == id }!!.price
+    }
 
+    fun getItemQuantity(id: Int): Int {
+        return stockList.find { it.id == id }?.quantity ?: 0
+    }
+
+    fun getSize(): Int {
+        return stockList.size
+    }
+
+    fun displayInventory() {
+        for (item in stockList) {
+            println(item)
+        }
+    }
+
+    fun displayInventoryByCategory(category: Category) {
+        val filteredList = stockList.filter { it.category == category }
+        for (item in filteredList) {
+            println(item)
+        }
+    }
 }
